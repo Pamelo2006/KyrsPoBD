@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Бренды</title>
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navigator {
+    background-color: #93CD8E;
+    padding: 10px 20px;
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.brands_kotalog {
+    padding: 20px;
+    width: 60%;
+    margin: 0 auto;
+    height: 60%;
+    overflow: auto;
+}
+
+.niz {
+    background-color: #000000;
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+    .navigator a {
+        margin-right: 20px;
+        text-decoration: none;
+        color: black;
+        font-family: Geneva, Arial, Helvetica, sans-serif;
+    }
+    .search-container {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+        #inp {
+        padding: 8px;
+        width: 200px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+    }
+        .but {
+        padding: 8px 16px;
+        background-color: #000000;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+    .but:hover {
+        background-color: #D3D3D3;
+    }
+        .list-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+    .list-group-item {
+        width: 100px;
+    }
+    .info {
+        display: none;
+    }
+    .first, .second, .third {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Geneva, Arial, Helvetica, sans-serif;
+        margin: 0 10px;
+    }
+    .first h5, .second h5, .third h5 {
+        color: #FFFFFF;
+    }
+    .first ul, .second ul, .third ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    .first a, .second a {
+        color: #FFFFFF;
+    }
+    .third p {
+        color: #FFFFFF;
+    }
+     .brandsInfo1, .brandsInfo2, .brandsInfo3, .brandsInfo4, .brandsInfo5 {
+        width: 100%;
+        height: 500px;
+        color: #93CD8E;
+    }
+    .selected-brand {
+        background-color: #93CD8E;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="navigator">
+        <div class="poh">
+            <a href="{% url 'index' %}">Главная</a>
+            <a href="{% url 'brends' %}">Бренды</a>
+            <a href="{% url 'useracount' %}">Личный кабинет</a>
+        </div>
+            <div class="search-container">
+                <input id="inp" type="text" placeholder="Поиск...">
+                <button class="but" type="submit">Найти</button>
+        </div>
+    </div>
+
+    <div class="products">
+
+    </div>
+
+    <div class="niz">
+
+    </div>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>

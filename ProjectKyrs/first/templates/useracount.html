@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Кабинет пользователя</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .cont {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .navigator {
+            background-color: #FFFFFF;
+            padding: 10px 20px;
+            height: 10%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
+        .navigator a {
+            margin-right: 20px;
+            text-decoration: none;
+            color: black;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        #inp {
+            padding: 8px;
+            width: 200px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        .but {
+            padding: 8px 16px;
+            background-color: #000000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .but:hover {
+            background-color: #D3D3D3;
+        }
+        .pod {
+            width: 100%;
+            height: 90%;
+            background-color: #E8E7E7;
+            display: flex;
+        }
+        .spi {
+            background-color: #FFFFFF;
+            height: 60%;
+            width: 20%;
+            margin: 50px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .contents {
+            background-color: #FFFFFF;
+            height: 60%;
+            width: 90%;
+            margin: 50px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .list_style {
+            list-style-type: none;
+            padding: 0;
+        }
+        .list_style li {
+            margin: 10px 0;
+        }
+        .list_style button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+        }
+        .list_style button:hover {
+            text-decoration: underline;
+        }
+        .content-block {
+            display: none;
+            text-align: center;
+        }
+        .content-block.active {
+            display: block;
+        }
+        .input-field{
+            margin: 10px;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px; /* Промежуток между кнопками */
+        }
+        .button-container button {
+            flex: 1; /* Равномерное распределение пространства между кнопками */
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="cont">
+
+        <div class="navigator">
+            <div class="poh">
+                <a href="{% url 'index' %}">Главная</a>
+                <a href="{% url 'brends' %}">Бренды</a>
+                <a href="{% url 'useracount' %}">Личный кабинет</a>
+            </div>
+        </div>
+        <div class="pod">
+            <div class="spi">
+                <div class="spisok">
+                    <ul class="list_style">
+                        <li><button onclick="showContent('profile')">Профиль</button></li>
+                        <li><button onclick="showContent('cart')">Корзина</button></li>
+                        <li><button onclick="showContent('orders')">Заказы</button></li>
+                        <li><button onclick="showContent('balance')">Баланс</button></li>
+                    </ul>
+                </div>
+            </div>
+        <div class="contents" id="contents">
+
+           <div class="content-block active" id="profile">
+                <h2>Профиль</h2>
+                {% if username %}
+                    <p style="text-align:center;">You have successfully {{ action }}: {{ username }}</p>
+                {% else %}
+                    <button onclick="showForm('registration')">Регистрация</button>
+                    <button onclick="showForm('login')">Вход</button>
+                    <div id="registration-form" style="display:none;">
+                        <form method="post" action="{% url 'postuser' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="Register">
+                            <p>Name:<br> <input name="user_name" type="text"/></p>
+                            <p>Login:<br> <input name="login" type="text" /></p>
+                            <p>Password:<br> <input name="password" type="password" /></p>
+                            <input type="submit" value="Регистрация" />
+                        </form>
+                    </div>
+                    <div id="login-form" style="display:none;">
+                        <form method="post" action="{% url 'handleuseractions' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="Login">
+                            <p>Login:<br> <input name="login" type="text" /></p>
+                            <p>Password:<br> <input name="password" type="password" /></p>
+                            <input type="submit" value="Вход" />
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="content-block" id="cart">
+                <h2>Корзина</h2>
+                <p>Содержимое корзины.</p>
+            </div>
+
+            <div class="content-block" id="orders">
+                <h2>Заказы</h2>
+                <p>Ваши заказы.</p>
+                <ul>
+                    {% for order in orders %}
+                        <li>
+                            <strong>Заказ №{{ order.id }}</strong><br>
+                            Пользователь: {{ order.user.user_name }}<br>
+                            Товар: {{ order.tovar.naimenovanie }}<br>
+                            Количество: {{ order.quantity }}<br>
+                            Сумма: {{ order.sum }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="content-block" id="balance">
+                    <h2>Баланс</h2>
+                    <form method="post" action="{% url 'usercard' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="Login">
+                        <p>Nomer:<br> <input name="nomer" type="text" /></p>
+                        <p>CV-Code:<br> <input name="cvcode" type="password" /></p>
+                        <input type="submit" value="Регистрация карты"/>
+                    </form>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function showContent(contentType) {
+        const contentBlocks = document.querySelectorAll('.content-block');
+        contentBlocks.forEach(block => {
+            block.classList.remove('active');
+        });
+
+        const selectedBlock = document.getElementById(contentType);
+        if (selectedBlock) {
+            selectedBlock.classList.add('active');
+        }
+    }
+
+    function showForm(formType) {
+        if (formType === 'registration') {
+            document.getElementById('registration-form').style.display = 'block';
+            document.getElementById('login-form').style.display = 'none';
+        } else if (formType === 'login') {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('registration-form').style.display = 'none';
+        }
+    }
+
+    window.onload = function() {
+        showContent('profile'); // Show the profile section by default
+    };
+</script>
+
+</html>
